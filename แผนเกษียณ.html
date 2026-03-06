@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>แผนเกษียณ 💰</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap');
+
+  :root {
+    --navy: #1a2744;
+    --gold: #f5c842;
+    --gold2: #e8a900;
+    --green: #2ecc8a;
+    --red: #ff5f5f;
+    --bg: #f0f4ff;
+    --card: #ffffff;
+    --text: #1a2744;
+    --muted: #7a8db0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Sarabun', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 100px;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--navy) 0%, #2d3f6e 100%);
+    padding: 20px 20px 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: rgba(245,200,66,0.15);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -20px; left: 30px;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: rgba(245,200,66,0.08);
+  }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .header h1 {
+    color: white;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+  }
+  .header-sub {
+    color: rgba(255,255,255,0.6);
+    font-size: 12px;
+    margin-top: 2px;
+  }
+  .notif-btn {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    border-radius: 12px;
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 20px;
+    position: relative;
+    transition: background 0.2s;
+  }
+  .notif-btn:active { background: rgba(255,255,255,0.25); }
+  .notif-dot {
+    position: absolute;
+    top: 8px; right: 8px;
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    border: 2px solid var(--navy);
+    display: none;
+  }
+  .notif-dot.active { display: block; }
+
+  /* STATUS CARD */
+  .status-card {
+    background: var(--gold);
+    border-radius: 16px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .status-icon { font-size: 28px; }
+  .status-label { font-size: 11px; color: rgba(26,39,68,0.7); font-weight: 600; }
+  .status-value { font-size: 18px; font-weight: 800; color: var(--navy); }
+  .status-badge {
+    margin-left: auto;
+    background: var(--navy);
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+  }
+
+  /* CONTENT */
+  .content { padding: 20px 16px 0; }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 24px 0 12px;
+  }
+
+  /* INPUT CARD */
+  .input-card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 2px 20px rgba(26,39,68,0.07);
+    margin-bottom: 12px;
+  }
+
+  .input-group {
+    margin-bottom: 18px;
+  }
+  .input-group:last-child { margin-bottom: 0; }
+
+  .input-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .input-label .emoji { font-size: 15px; }
+
+  .input-row {
+    display: flex;
+    align-items: center;
+    background: var(--bg);
+    border-radius: 14px;
+    border: 2px solid transparent;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+  }
+  .input-row:focus-within {
+    border-color: var(--gold2);
+    box-shadow: 0 0 0 4px rgba(245,200,66,0.15);
+  }
+  .input-unit {
+    padding: 0 14px;
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 600;
+    white-space: nowrap;
+    background: transparent;
+    border-right: 1.5px solid #e0e6f5;
+    height: 48px;
+    display: flex; align-items: center;
+  }
+  .input-unit-right {
+    padding: 0 14px;
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 600;
+    border-left: 1.5px solid #e0e6f5;
+    height: 48px;
+    display: flex; align-items: center;
+  }
+  input[type="number"], input[type="text"] {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 0 14px;
+    height: 48px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    font-family: 'Sarabun', sans-serif;
+    outline: none;
+    -moz-appearance: textfield;
+    width: 100%;
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+  /* SLIDER */
+  .slider-container { margin-top: 10px; }
+  input[type="range"] {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(to right, var(--gold2) 0%, var(--gold2) var(--val, 50%), #e0e6f5 var(--val, 50%), #e0e6f5 100%);
+    outline: none;
+    border: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 8px 0;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 3px solid var(--gold2);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    cursor: pointer;
+  }
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* RESULT CARDS */
+  .result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .result-card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 18px 16px;
+    box-shadow: 0 2px 20px rgba(26,39,68,0.07);
+    text-align: center;
+  }
+  .result-card.full { grid-column: 1 / -1; }
+  .result-card.highlight {
+    background: linear-gradient(135deg, var(--navy), #2d3f6e);
+    color: white;
+  }
+  .result-emoji { font-size: 24px; margin-bottom: 6px; }
+  .result-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  .result-card.highlight .result-label { color: rgba(255,255,255,0.6); }
+  .result-value {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text);
+  }
+  .result-card.highlight .result-value { color: var(--gold); }
+  .result-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+  .result-card.highlight .result-sub { color: rgba(255,255,255,0.5); }
+
+  /* STATUS INDICATOR */
+  .status-indicator {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 18px 20px;
+    box-shadow: 0 2px 20px rgba(26,39,68,0.07);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .status-bar-wrap { flex: 1; }
+  .status-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .status-bar {
+    height: 10px;
+    background: #e0e6f5;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .status-bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.5s ease;
+    background: var(--green);
+  }
+  .status-bar-fill.warning { background: #f5a623; }
+  .status-bar-fill.danger { background: var(--red); }
+
+  /* COMPARISON TABLE */
+  .compare-card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 2px 20px rgba(26,39,68,0.07);
+    overflow: hidden;
+  }
+  .compare-card h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--navy);
+  }
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f4ff;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-radius: 10px;
+    padding: 10px 8px;
+    margin: 0 -8px;
+  }
+  .compare-row:active { background: var(--bg); }
+  .compare-row.header-row {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    cursor: default;
+    padding-bottom: 4px;
+  }
+  .compare-row.header-row:active { background: transparent; }
+  .compare-row.active-plan {
+    background: rgba(245,200,66,0.1);
+    border-radius: 10px;
+  }
+  .plan-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .plan-amount {
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+  }
+  .plan-result {
+    font-size: 13px;
+    font-weight: 700;
+    text-align: right;
+    color: var(--green);
+  }
+  .plan-badge {
+    font-size: 10px;
+    background: var(--gold);
+    color: var(--navy);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 700;
+    display: inline-block;
+    margin-top: 2px;
+  }
+
+  /* NOTIFICATION PANEL */
+  .notif-panel {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: none;
+    align-items: flex-end;
+    backdrop-filter: blur(4px);
+  }
+  .notif-panel.open { display: flex; }
+  .notif-sheet {
+    background: white;
+    border-radius: 28px 28px 0 0;
+    padding: 28px 20px 40px;
+    width: 100%;
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .sheet-handle {
+    width: 40px; height: 4px;
+    background: #e0e6f5;
+    border-radius: 2px;
+    margin: 0 auto 20px;
+  }
+  .sheet-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .sheet-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+  .notif-option {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--bg);
+  }
+  .notif-option:last-child { border-bottom: none; }
+  .notif-icon {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .notif-text { flex: 1; }
+  .notif-text strong { font-size: 14px; font-weight: 700; display: block; }
+  .notif-text span { font-size: 12px; color: var(--muted); }
+  .toggle {
+    width: 52px; height: 30px;
+    background: #e0e6f5;
+    border-radius: 15px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.3s;
+    flex-shrink: 0;
+    border: none;
+  }
+  .toggle.on { background: var(--green); }
+  .toggle::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 24px; height: 24px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+  .toggle.on::after { transform: translateX(22px); }
+  .enable-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--navy), #2d3f6e);
+    color: var(--gold);
+    border: none;
+    border-radius: 16px;
+    padding: 18px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Sarabun', sans-serif;
+    cursor: pointer;
+    margin-top: 24px;
+    letter-spacing: 0.3px;
+    transition: opacity 0.2s;
+  }
+  .enable-btn:active { opacity: 0.85; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 110px; left: 16px; right: 16px;
+    background: var(--navy);
+    color: white;
+    padding: 16px 20px;
+    border-radius: 16px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast-icon { font-size: 20px; }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: white;
+    border-top: 1px solid #eef2ff;
+    display: flex;
+    padding: 8px 0 20px;
+    box-shadow: 0 -4px 20px rgba(26,39,68,0.08);
+    z-index: 100;
+  }
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 8px 0;
+    border: none;
+    background: transparent;
+    transition: opacity 0.2s;
+  }
+  .nav-item:active { opacity: 0.7; }
+  .nav-icon { font-size: 22px; }
+  .nav-label { font-size: 10px; font-weight: 600; color: var(--muted); font-family: 'Sarabun', sans-serif; }
+  .nav-item.active .nav-label { color: var(--navy); font-weight: 700; }
+  .nav-item.active .nav-icon { filter: drop-shadow(0 2px 4px rgba(26,39,68,0.3)); }
+
+  /* REMINDERS SECTION */
+  .reminder-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+  .reminder-item {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 2px 12px rgba(26,39,68,0.06);
+  }
+  .reminder-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .reminder-content { flex: 1; }
+  .reminder-title { font-size: 14px; font-weight: 700; color: var(--navy); }
+  .reminder-time { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .reminder-dismiss {
+    background: var(--bg);
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'Sarabun', sans-serif;
+  }
+
+  /* PAGES */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* FORMAT HELPERS */
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* SAVE BUTTON */
+  .save-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--gold2), var(--gold));
+    color: var(--navy);
+    border: none;
+    border-radius: 16px;
+    padding: 18px;
+    font-size: 16px;
+    font-weight: 800;
+    font-family: 'Sarabun', sans-serif;
+    cursor: pointer;
+    margin-top: 8px;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 15px rgba(232,169,0,0.4);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .save-btn:active { transform: scale(0.98); box-shadow: 0 2px 8px rgba(232,169,0,0.3); }
+
+  .divider {
+    height: 1px;
+    background: var(--bg);
+    margin: 16px 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1>💰 แผนเกษียณ</h1>
+      <div class="header-sub">วางแผนอนาคตของคุณ</div>
+    </div>
+    <button class="notif-btn" onclick="openNotifPanel()">
+      🔔
+      <div class="notif-dot" id="notifDot"></div>
+    </button>
+  </div>
+  <div class="status-card" id="mainStatusCard">
+    <div class="status-icon">📊</div>
+    <div>
+      <div class="status-label">สถานะแผน</div>
+      <div class="status-value" id="statusText">กำลังคำนวณ...</div>
+    </div>
+    <div class="status-badge" id="statusBadge">–</div>
+  </div>
+</div>
+
+<!-- PAGES -->
+<div class="content">
+
+  <!-- PAGE 1: INPUT -->
+  <div class="page active" id="page-input">
+    <div class="section-title">📝 ข้อมูลของคุณ</div>
+
+    <div class="input-card">
+      <div class="input-group">
+        <div class="input-label"><span class="emoji">👤</span> อายุปัจจุบัน</div>
+        <div class="input-row">
+          <input type="number" id="currentAge" value="20" min="18" max="60" oninput="calculate()">
+          <div class="input-unit-right">ปี</div>
+        </div>
+        <div class="slider-container">
+          <input type="range" id="currentAgeSlider" min="18" max="60" value="20"
+            oninput="syncSlider('currentAge', this); calculate()">
+          <div class="range-labels"><span>18</span><span>60</span></div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="input-group">
+        <div class="input-label"><span class="emoji">🏖️</span> อายุที่ต้องการเกษียณ</div>
+        <div class="input-row">
+          <input type="number" id="retireAge" value="40" min="30" max="70" oninput="calculate()">
+          <div class="input-unit-right">ปี</div>
+        </div>
+        <div class="slider-container">
+          <input type="range" id="retireAgeSlider" min="30" max="70" value="40"
+            oninput="syncSlider('retireAge', this); calculate()">
+          <div class="range-labels"><span>30</span><span>70</span></div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="input-group">
+        <div class="input-label"><span class="emoji">💸</span> ค่าใช้จ่ายต่อเดือนหลังเกษียณ</div>
+        <div class="input-row">
+          <input type="number" id="monthlyExpense" value="25000" min="1000" max="200000" step="1000" oninput="calculate()">
+          <div class="input-unit-right">฿/เดือน</div>
+        </div>
+        <div class="slider-container">
+          <input type="range" id="monthlyExpenseSlider" min="5000" max="100000" value="25000" step="1000"
+            oninput="syncSlider('monthlyExpense', this); calculate()">
+          <div class="range-labels"><span>5K</span><span>100K</span></div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="input-group">
+        <div class="input-label"><span class="emoji">📈</span> ผลตอบแทนเฉลี่ยต่อปี</div>
+        <div class="input-row">
+          <input type="number" id="returnRate" value="8" min="1" max="20" step="0.5" oninput="calculate()">
+          <div class="input-unit-right">% / ปี</div>
+        </div>
+        <div class="slider-container">
+          <input type="range" id="returnRateSlider" min="1" max="20" value="8" step="0.5"
+            oninput="syncSlider('returnRate', this); calculate()">
+          <div class="range-labels"><span>1%</span><span>20%</span></div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="input-group">
+        <div class="input-label"><span class="emoji">💰</span> เงินที่ลงทุนต่อเดือนตอนนี้</div>
+        <div class="input-row">
+          <input type="number" id="currentInvest" value="10000" min="0" max="200000" step="500" oninput="calculate()">
+          <div class="input-unit-right">฿/เดือน</div>
+        </div>
+        <div class="slider-container">
+          <input type="range" id="currentInvestSlider" min="0" max="50000" value="10000" step="500"
+            oninput="syncSlider('currentInvest', this); calculate()">
+          <div class="range-labels"><span>0</span><span>50K</span></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="save-btn" onclick="saveAndShow()">
+      💾 บันทึกและดูผล
+    </button>
+  </div>
+
+  <!-- PAGE 2: RESULTS -->
+  <div class="page" id="page-result">
+    <div class="section-title">📊 ผลการคำนวณ</div>
+
+    <div class="result-grid">
+      <div class="result-card highlight full">
+        <div class="result-emoji">🎯</div>
+        <div class="result-label">เงินที่ต้องลงทุนต่อเดือน (แผนกลาง)</div>
+        <div class="result-value num" id="r-required">฿0</div>
+        <div class="result-sub" id="r-requiredSub">เพื่อเกษียณตามเป้า</div>
+      </div>
+
+      <div class="result-card">
+        <div class="result-emoji">🏦</div>
+        <div class="result-label">เงินที่ต้องมีตอนเกษียณ</div>
+        <div class="result-value num" id="r-total">฿0</div>
+        <div class="result-sub">เป้าหมาย</div>
+      </div>
+
+      <div class="result-card">
+        <div class="result-emoji">📅</div>
+        <div class="result-label">ระยะเวลาลงทุน</div>
+        <div class="result-value num" id="r-years">0 ปี</div>
+        <div class="result-sub">จนถึงเกษียณ</div>
+      </div>
+
+      <div class="result-card full">
+        <div class="result-emoji">💼</div>
+        <div class="result-label">เงินที่จะมีตามแผนปัจจุบัน</div>
+        <div class="result-value num" id="r-current">฿0</div>
+        <div class="result-sub" id="r-gap">ห่างจากเป้า: –</div>
+      </div>
+    </div>
+
+    <!-- STATUS BAR -->
+    <div class="status-indicator">
+      <div style="font-size:32px" id="statusEmoji">🟡</div>
+      <div class="status-bar-wrap">
+        <div class="status-bar-label">
+          <span id="statusMsg">ตรวจสอบแผน...</span>
+          <span id="statusPct">0%</span>
+        </div>
+        <div class="status-bar">
+          <div class="status-bar-fill" id="statusFill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPARE TABLE -->
+    <div class="compare-card">
+      <h3>🗺️ เปรียบเทียบแผน 4 ระดับ</h3>
+      <div class="compare-row header-row">
+        <div>แผน</div>
+        <div style="text-align:center">ลงทุน/เดือน</div>
+        <div style="text-align:right">มีหลังเกษียณ</div>
+      </div>
+      <div id="compareRows"></div>
+    </div>
+  </div>
+
+  <!-- PAGE 3: REMINDERS -->
+  <div class="page" id="page-remind">
+    <div class="section-title">🔔 การแจ้งเตือน</div>
+    
+    <div class="reminder-list" id="reminderList">
+      <!-- filled by JS -->
+    </div>
+
+    <div class="input-card">
+      <h3 style="font-size:14px;font-weight:700;margin-bottom:16px;color:var(--navy)">⚙️ ตั้งเวลาแจ้งเตือน</h3>
+      <div class="input-group">
+        <div class="input-label"><span class="emoji">📅</span> วันที่ต้องโอนลงทุนทุกเดือน</div>
+        <div class="input-row">
+          <input type="number" id="investDay" value="1" min="1" max="28">
+          <div class="input-unit-right">ของเดือน</div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="input-group">
+        <div class="input-label"><span class="emoji">⏰</span> เวลาแจ้งเตือน</div>
+        <div class="input-row">
+          <input type="text" id="reminderTime" value="09:00" placeholder="09:00">
+        </div>
+      </div>
+      <button class="save-btn" onclick="setReminder()" style="margin-top:16px">
+        🔔 เปิดแจ้งเตือน
+      </button>
+    </div>
+
+    <div class="section-title">📋 แจ้งเตือนที่ตั้งไว้</div>
+    <div class="input-card">
+      <div id="activeReminders">
+        <div style="text-align:center;padding:20px;color:var(--muted);font-size:13px">
+          ยังไม่มีการแจ้งเตือน<br>กดปุ่มด้านบนเพื่อตั้ง 🔔
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end content -->
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="nav-item active" onclick="switchPage('input', this)">
+    <span class="nav-icon">✏️</span>
+    <span class="nav-label">กรอกข้อมูล</span>
+  </button>
+  <button class="nav-item" onclick="switchPage('result', this)">
+    <span class="nav-icon">📊</span>
+    <span class="nav-label">ผลลัพธ์</span>
+  </button>
+  <button class="nav-item" onclick="switchPage('remind', this)">
+    <span class="nav-icon">🔔</span>
+    <span class="nav-label">แจ้งเตือน</span>
+  </button>
+</div>
+
+<!-- NOTIFICATION PANEL -->
+<div class="notif-panel" id="notifPanel" onclick="closeNotifPanel(event)">
+  <div class="notif-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">🔔 ตั้งค่าการแจ้งเตือน</div>
+    <div class="sheet-sub">เลือกประเภทแจ้งเตือนที่ต้องการ</div>
+
+    <div class="notif-option">
+      <div class="notif-icon" style="background:#fff8e1">💰</div>
+      <div class="notif-text">
+        <strong>แจ้งเตือนวันโอนเงิน</strong>
+        <span>แจ้งเตือนทุกเดือนให้โอนเงินลงทุน</span>
+      </div>
+      <button class="toggle on" id="t1" onclick="toggleSwitch(this)"></button>
+    </div>
+
+    <div class="notif-option">
+      <div class="notif-icon" style="background:#e8f5e9">📈</div>
+      <div class="notif-text">
+        <strong>รายงานความคืบหน้า</strong>
+        <span>สรุปผลทุก 3 เดือน</span>
+      </div>
+      <button class="toggle" id="t2" onclick="toggleSwitch(this)"></button>
+    </div>
+
+    <div class="notif-option">
+      <div class="notif-icon" style="background:#fce4ec">⚠️</div>
+      <div class="notif-text">
+        <strong>เตือนเมื่อแผนเสี่ยง</strong>
+        <span>แจ้งถ้าลงทุนต่ำกว่าเป้า</span>
+      </div>
+      <button class="toggle on" id="t3" onclick="toggleSwitch(this)"></button>
+    </div>
+
+    <div class="notif-option">
+      <div class="notif-icon" style="background:#e3f2fd">🎯</div>
+      <div class="notif-text">
+        <strong>เตือนเมื่อเข้าใกล้เป้า</strong>
+        <span>แจ้งเตือนเมื่อใกล้ถึงเป้าหมาย</span>
+      </div>
+      <button class="toggle" id="t4" onclick="toggleSwitch(this)"></button>
+    </div>
+
+    <button class="enable-btn" onclick="enableNotifications()">
+      ✅ เปิดใช้การแจ้งเตือน
+    </button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toastIcon">✅</span>
+  <span id="toastMsg">บันทึกสำเร็จ!</span>
+</div>
+
+<script>
+let notifEnabled = false;
+let activeReminderList = [];
+
+function fmt(n) {
+  if (n >= 1000000) return '฿' + (n/1000000).toFixed(2) + 'ล้าน';
+  if (n >= 10000) return '฿' + Math.round(n/1000) + 'K';
+  return '฿' + Math.round(n).toLocaleString('th-TH');
+}
+function fmtFull(n) {
+  return '฿' + Math.round(n).toLocaleString('th-TH');
+}
+
+function getInputs() {
+  return {
+    currentAge: parseFloat(document.getElementById('currentAge').value) || 20,
+    retireAge: parseFloat(document.getElementById('retireAge').value) || 40,
+    monthlyExpense: parseFloat(document.getElementById('monthlyExpense').value) || 25000,
+    returnRate: parseFloat(document.getElementById('returnRate').value) || 8,
+    currentInvest: parseFloat(document.getElementById('currentInvest').value) || 0,
+  };
+}
+
+// Future value of monthly investment
+function calcFV(monthly, years, annualRate) {
+  const r = annualRate / 100 / 12;
+  const n = years * 12;
+  if (r === 0) return monthly * n;
+  return monthly * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
+}
+
+// Monthly needed given target FV
+function calcMonthly(fv, years, annualRate) {
+  const r = annualRate / 100 / 12;
+  const n = years * 12;
+  if (r === 0) return fv / n;
+  return fv / (((Math.pow(1 + r, n) - 1) / r) * (1 + r));
+}
+
+function calculate() {
+  const { currentAge, retireAge, monthlyExpense, returnRate, currentInvest } = getInputs();
+  const years = Math.max(1, retireAge - currentAge);
+  const inflation = 0.03;
+  const safeWithdraw = 0.04;
+
+  // Target retirement fund (4% rule)
+  const targetFund = (monthlyExpense * 12) / safeWithdraw;
+
+  // Required monthly investment (middle plan = targetFund)
+  const required = calcMonthly(targetFund, years, returnRate);
+
+  // Current plan FV
+  const currentFV = calcFV(currentInvest, years, returnRate);
+
+  // Plans
+  const plans = [
+    { name: '💸 แผนปัจจุบัน', invest: currentInvest },
+    { name: '📌 แผนประหยัด', invest: required * 0.75 },
+    { name: '🎯 แผนปานกลาง', invest: required },
+    { name: '🌟 แผนสบาย ๆ', invest: required * 1.25 },
+  ];
+
+  return { years, targetFund, required, currentFV, currentInvest, plans, monthlyExpense, returnRate };
+}
+
+function updateUI() {
+  const d = calculate();
+
+  // Status card
+  const pct = Math.min(200, Math.round((d.currentFV / d.targetFund) * 100));
+  let statusText, badge, statusMsg, emoji, barClass;
+
+  if (d.currentInvest >= d.required * 0.99) {
+    statusText = 'แผนดีมาก! 🎉';
+    badge = '✅ เพียงพอ';
+    statusMsg = 'แผนของคุณเพียงพอสำหรับเกษียณ';
+    emoji = '🟢';
+    barClass = '';
+  } else if (d.currentInvest >= d.required * 0.75) {
+    statusText = 'ใกล้เป้าแล้ว!';
+    badge = '🟡 ปรับนิดหน่อย';
+    statusMsg = 'เพิ่มการลงทุนอีกเล็กน้อย';
+    emoji = '🟡';
+    barClass = 'warning';
+  } else {
+    statusText = 'แผนยังไม่เพียงพอ ⚠️';
+    badge = '❌ ต้องปรับ';
+    statusMsg = 'ควรเพิ่มเงินลงทุนต่อเดือน';
+    emoji = '🔴';
+    barClass = 'danger';
+  }
+
+  document.getElementById('statusText').textContent = statusText;
+  document.getElementById('statusBadge').textContent = badge;
+  document.getElementById('statusMsg').textContent = statusMsg;
+  document.getElementById('statusPct').textContent = pct + '%';
+  document.getElementById('statusEmoji').textContent = emoji;
+
+  const fill = document.getElementById('statusFill');
+  fill.style.width = Math.min(100, pct) + '%';
+  fill.className = 'status-bar-fill' + (barClass ? ' ' + barClass : '');
+
+  // Result page
+  document.getElementById('r-required').textContent = fmtFull(d.required);
+  document.getElementById('r-total').textContent = fmt(d.targetFund);
+  document.getElementById('r-years').textContent = d.years + ' ปี';
+  document.getElementById('r-current').textContent = fmt(d.currentFV);
+
+  const gap = d.currentFV - d.targetFund;
+  const gapEl = document.getElementById('r-gap');
+  if (gap >= 0) {
+    gapEl.textContent = '✅ เกินเป้า +' + fmt(gap);
+    gapEl.style.color = 'var(--green)';
+  } else {
+    gapEl.textContent = '❌ ขาดอยู่ ' + fmt(Math.abs(gap));
+    gapEl.style.color = 'var(--red)';
+  }
+
+  // Compare table
+  const rows = document.getElementById('compareRows');
+  rows.innerHTML = '';
+  d.plans.forEach((p, i) => {
+    const fv = calcFV(p.invest, d.years, d.returnRate);
+    const isActive = i === 0;
+    const row = document.createElement('div');
+    row.className = 'compare-row' + (isActive ? ' active-plan' : '');
+    row.innerHTML = `
+      <div>
+        <div class="plan-name">${p.name}</div>
+        ${i === 0 ? '<div class="plan-badge">ของคุณ</div>' : ''}
+        ${i === 2 ? '<div class="plan-badge">แนะนำ</div>' : ''}
+      </div>
+      <div class="plan-amount">${fmtFull(Math.round(p.invest))}</div>
+      <div class="plan-result">${fmt(fv)}</div>
+    `;
+    row.onclick = () => {
+      document.getElementById('currentInvest').value = Math.round(p.invest);
+      document.getElementById('currentInvestSlider').value = Math.round(p.invest);
+      updateSliders();
+      updateUI();
+      showToast('📌 ตั้งแผน: ' + p.name.replace(/[^\u0E00-\u0E7F\w\s]/g, '').trim(), '✏️');
+    };
+    rows.appendChild(row);
+  });
+
+  // Notification dot
+  if (d.currentInvest < d.required * 0.75) {
+    document.getElementById('notifDot').classList.add('active');
+  } else {
+    document.getElementById('notifDot').classList.remove('active');
+  }
+
+  updateReminders(d);
+}
+
+function updateReminders(d) {
+  const list = document.getElementById('reminderList');
+  const items = [];
+
+  if (d.currentInvest < d.required) {
+    items.push({
+      color: '#ff5f5f',
+      icon: '⚠️',
+      title: `เพิ่มการลงทุน ${fmtFull(Math.round(d.required - d.currentInvest))}/เดือน`,
+      time: 'เพื่อให้แผนเพียงพอ'
+    });
+  }
+
+  const day = document.getElementById('investDay')?.value || 1;
+  items.push({
+    color: 'var(--gold2)',
+    icon: '💰',
+    title: `โอนเงินลงทุน ${fmtFull(d.currentInvest)} บาท`,
+    time: `ทุกวันที่ ${day} ของเดือน`
+  });
+
+  items.push({
+    color: 'var(--green)',
+    icon: '📈',
+    title: 'ตรวจสอบผลการลงทุน',
+    time: 'ทุก 3 เดือน'
+  });
+
+  list.innerHTML = items.map(item => `
+    <div class="reminder-item">
+      <div class="reminder-dot" style="background:${item.color}"></div>
+      <div style="font-size:20px">${item.icon}</div>
+      <div class="reminder-content">
+        <div class="reminder-title">${item.title}</div>
+        <div class="reminder-time">${item.time}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function syncSlider(inputId, slider) {
+  document.getElementById(inputId).value = slider.value;
+  updateSliders();
+}
+
+function updateSliders() {
+  ['currentAge', 'retireAge', 'monthlyExpense', 'returnRate', 'currentInvest'].forEach(id => {
+    const input = document.getElementById(id);
+    const slider = document.getElementById(id + 'Slider');
+    if (slider && input) {
+      slider.value = input.value;
+      const min = parseFloat(slider.min), max = parseFloat(slider.max), val = parseFloat(input.value);
+      const pct = ((val - min) / (max - min)) * 100;
+      slider.style.setProperty('--val', pct + '%');
+    }
+  });
+}
+
+// Also sync input → slider
+document.querySelectorAll('input[type="number"]').forEach(input => {
+  input.addEventListener('input', () => {
+    updateSliders();
+  });
+});
+
+function switchPage(name, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'result' || name === 'remind') updateUI();
+}
+
+function saveAndShow() {
+  updateUI();
+  switchPage('result', document.querySelectorAll('.nav-item')[1]);
+  showToast('บันทึกและคำนวณสำเร็จ! 🎉', '✅');
+}
+
+function openNotifPanel() {
+  document.getElementById('notifPanel').classList.add('open');
+}
+
+function closeNotifPanel(e) {
+  if (e.target === document.getElementById('notifPanel')) {
+    document.getElementById('notifPanel').classList.remove('open');
+  }
+}
+
+function toggleSwitch(btn) {
+  btn.classList.toggle('on');
+}
+
+function enableNotifications() {
+  document.getElementById('notifPanel').classList.remove('open');
+  if ('Notification' in window) {
+    Notification.requestPermission().then(perm => {
+      if (perm === 'granted') {
+        notifEnabled = true;
+        showToast('เปิดการแจ้งเตือนแล้ว! 🔔', '🔔');
+        new Notification('💰 แผนเกษียณ', {
+          body: 'เปิดการแจ้งเตือนสำเร็จแล้ว!',
+          icon: '💰'
+        });
+      } else {
+        showToast('กรุณาอนุญาตการแจ้งเตือนในเบราว์เซอร์', '⚠️');
+      }
+    });
+  } else {
+    showToast('เบราว์เซอร์ไม่รองรับ — บันทึกแผนแทน ✅', '💾');
+    notifEnabled = true;
+  }
+}
+
+function setReminder() {
+  const day = document.getElementById('investDay').value || 1;
+  const time = document.getElementById('reminderTime').value || '09:00';
+  const d = calculate();
+
+  const reminder = {
+    day, time,
+    amount: Math.round(d.currentInvest),
+    id: Date.now()
+  };
+  activeReminderList.push(reminder);
+
+  const container = document.getElementById('activeReminders');
+  container.innerHTML = activeReminderList.map(r => `
+    <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--bg)">
+      <div style="font-size:24px">🔔</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:700;color:var(--navy)">โอนเงิน ${fmtFull(r.amount)} บาท</div>
+        <div style="font-size:12px;color:var(--muted)">ทุกวันที่ ${r.day} เวลา ${r.time} น.</div>
+      </div>
+      <div style="width:8px;height:8px;border-radius:50%;background:var(--green)"></div>
+    </div>
+  `).join('');
+
+  if ('Notification' in window && Notification.permission === 'granted') {
+    new Notification('🔔 ตั้งการแจ้งเตือนสำเร็จ', {
+      body: `โอนเงินลงทุน ${fmtFull(d.currentInvest)} บาท ทุกวันที่ ${day} เวลา ${time} น.`
+    });
+  }
+
+  showToast(`ตั้งแจ้งเตือนวันที่ ${day} เวลา ${time} น. ✅`, '🔔');
+}
+
+function showToast(msg, icon = '✅') {
+  const toast = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  document.getElementById('toastIcon').textContent = icon;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// INIT
+window.onload = () => {
+  updateSliders();
+  calculate();
+  updateUI();
+};
+</script>
+</body>
+</html>
